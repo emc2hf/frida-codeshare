@@ -1,0 +1,129 @@
+Frida codeshare scripts. Order is Category most interesting
+
+# HTTP
+
+| URL | Script | Description |
+|---|---|---|
+https://codeshare.frida.re/@Akramelbahar/native-request-module-offset-finder-/ | native_request_module_offset.js [location](HTTP/native_request_module_offset.js) | hooks various SSL/TLS and socket-related functions to help identify where SSL/TLS operations are performed in native code
+
+https://codeshare.frida.re/@rk00/httprecv/ | Name: http_recv.js => trace TCP connections of Android apps. based on libc.so!connect(). adds Java backtrace if calling thread is attached to JVM (omitted otherwise). results could be used to correlate data to inbound connections on TLS interception proxies
+
+https://codeshare.frida.re/@KhanhPham2411/android-tcp-tracev2/ | Name: tcp_tracev2.js => Frida script to trace TCP connections of Android apps based on libc.so!connect(). Adds Java backtrace if calling thread is attached to JVM (omitted otherwise). Results could be used to correlate data to inbound connections on TLS interception proxies
+
+https://codeshare.frida.re/@RadonCoding/frida-okhttp3-intercept/ | Name: okhttp3_intercept.js => Intercepts OkHttp3 requests and prints the requests
+
+https://codeshare.frida.re/@yoavst/okhttp3-interceptor-obfuscated/ | Name: okhttp_intercept_obfuscated_okio.js => Hook okhttp3 but supports project with okio obfuscated
+
+https://codeshare.frida.re/@owen800q/okhttp3-interceptor/ | Name: okhttp3_intercept2.js => Implementation of Okhttp3 network interceptor 
+
+https://codeshare.frida.re/@nneonneo/android-okhttp3-logger/ | Name: okhttp_intercept3.js => Log requests and responses made using okhttp3
+
+https://codeshare.frida.re/@bsxp/okhttp-logging/ | Name: okhttp_logging2.js => Log all http/https requests and responses of okhttp
+
+https://codeshare.frida.re/@helviojunior/okhttp-logging/ | Name: okhttp_logging.js => Log all http/https requests and responses of okhttp
+
+| Name: post_tcp_udp_tracer.js => trace HTTP POST and UDP calls with request and response data
+
+https://codeshare.frida.re/@lolicon/https-stalker/ | Name: https_stalker.js => trace https payloads
+
+https://codeshare.frida.re/@scrool/okhttp3-log-retry-and-follow-up-requests/ | Name: okhttp3_log_retry.js => Log okhttp3 http(s) communication. Targeted application must use RetryAndFollowUpInterceptor
+
+https://codeshare.frida.re/@federicodotta/okhttp-hostname-verifier-bypass/ | Name: okhttp_hostname_verifier_bypass.js => OkHttp Hostname Verifier bypass
+
+https://codeshare.frida.re/@ninjadiary/okhttp/ | Name: okhttp_general_intercept.js => This script is a network traffic interceptor for Android apps using OkHttp3. It logs all request metadata and request bodies so you can see everything the app sends out.
+
+https://codeshare.frida.re/@Linuxinet/frida-traffic-interceptor/ | Name: webview_url_logger.js => Intercepts network traffic using Frida for specified target hosts, logging API calls and WebView URL loads
+
+https://codeshare.frida.re/@gru122121/tls-dumper/ | Name: TLS_dumper.js => Dumps the Tls profile for android apps via libssl.so. This script sniffs and decodes the app’s TLS ClientHello by hooking OpenSSL, allowing you to see the exact TLS configuration the app uses when establishing HTTPS connections.
+
+https://codeshare.frida.re/@ninjadiary/frinja---sockets/ | Name: frinja_sockets.js => It passively records every socket creation, binding, connection, and stream access made by the app, giving full visibility into the app’s low-level networking activity.
+
+https://codeshare.frida.re/@mame82/android-tcp-trace/ | Name: TCP_trace.js => Log Android TCP connections (with Java call traces, if applicable)
+
+https://codeshare.frida.re/@fdciabdul/frida-tracer/ | Name: HTTP_UDP_general_tracer.js => trace HTTP POST and UDP calls with request and response data
+
+
+# Native
+
+https://codeshare.frida.re/@Hyupai/tracedlopen/ | Name: trace_dlopen.js => Traces dlopen calls
+
+https://codeshare.frida.re/@SNGWN/native-lib-functions/ | Name: native_lib_functions.js => get list of all loaded libraries from the application
+
+https://codeshare.frida.re/@Hyupai/hook-openat/ | Name: openat_hook.js => Hook OpenAt more description!
+
+https://codeshare.frida.re/@Hyupai/classloader/ | Name: classloader.js => ??
+
+https://codeshare.frida.re/@P0r0/very-early-instrumentation-of-native-code/ | Name early_instrumentation.js => Hook the global constructor of a shared library. Hooks open() to detect when libnative.so is being loaded. Enumerates the dynamic linker to find a key symbol. Hooks into the linker's internal ELF-loading function. Computes the address of the library’s global constructor (_init). Attaches another hook to the constructor to run code at the earliest possible moment.
+
+https://codeshare.frida.re/@chame1eon/jnitrace/ | Name: jnitrace.js => Trace the JNI API in Android apps. intercepts interactions between the JavaVM and JNIEnv structures, logging method calls, arguments, returns, and backtraces without modifying the original behavior.
+
+https://codeshare.frida.re/@dzonerzy/whereisnative/ | Name: where_is_native.js => Check for native library calls and return a stacktrace
+
+https://codeshare.frida.re/@hyugogirubato/android-native-interceptor/ | Name: native_interceptor.js => allows you to intercept and monitor function calls in native libraries and processes. This script provides a wide range of customization options to help you capture and analyze the behavior of specific functions within the target application.
+
+https://codeshare.frida.re/@oleavr/who-does-it-call/ | Name: universal_who_calls_function.js => Find out which functions are called by a given function on the next call for Android and iOS. | **TO TEST**
+
+
+
+# Strings
+https://codeshare.frida.re/@DiegoCaridei/search-for-the-string-in-memory/ | Name: inmemory_strings.js => Search for the string in memory
+
+https://codeshare.frida.re/@Alkeraithe/encryptedsharedpreferences/ | Name: encrypted_shared_preferences.js => Check values saved into EncryptedSharedPreferences before encryption
+
+https://codeshare.frida.re/@abduxg/strwrt/ | Name: strwrt.js => strwrt PENDING DESCRIPTION ??
+
+
+# Trace
+
+https://codeshare.frida.re/@Hyupai/registernativesdump/ | Name: RegisterNatives_dump.js => Dump registerNatives calls with address (absolute and offset)
+
+https://codeshare.frida.re/@LAripping/trace-registernatives/ | Name: trace_registerNatives.ja => Trace invocations of the RegisterNatives JNI API, to identify native functions registered from within native code on runtime
+
+https://codeshare.frida.re/@k7eon/android-full-class-path/ | Name: full_class_path => find full class path for Java.use() method
+
+https://codeshare.frida.re/@ahmsabryy/discover-exported-components/ | Name: exported_components.js => discover exported components while the code is obufsecated or u can't read it
+
+https://codeshare.frida.re/@Serhatcck/java-crypto-viewer/ | Name: java_crypto_viewer.js => View crypto operations in java(android).
+
+https://codeshare.frida.re/@LaiKash/getinfofromclass/ | Name: get_info_class.js => Call it inside Java.perform(function () {getInfoFromClass("com.example.class.name");}); For fast exploration of a class with the signatures for the overloaded methods
+
+https://codeshare.frida.re/@dzonerzy/dereflector/ | Name: dereflector.js => Show info about methods and classes loaded via reflection on Android application
+
+https://codeshare.frida.re/@Alkeraithe/monitorsql/ | Name: monitorSQL.js => Print all SQL queries executed from android sqlite, and sqlcipher
+
+https://codeshare.frida.re/@lateralusd/uibutton-method/ | Name: UIbutton.js => Get method behind the UIButton click
+
+https://codeshare.frida.re/@stish834/tracesensitivedata/ | Name:trace_sensitive_data.js => Traces sensitive data
+
+https://codeshare.frida.re/@luoyesiqiu/android-native-log/ | Name: liblog.js => Use liblog.so output log 
+
+https://codeshare.frida.re/@SecFathy/sqlite-data-monitor/ | Name: sqlite_data_monitor.js => Monitor SQLite Database Activity in Custom Application and show a Insert and delete queries
+
+https://codeshare.frida.re/@J-jaeyoung/getchildpid/ | Name: get_child_pid => get child's process id of fork
+
+https://codeshare.frida.re/@sknux/viewing-all-read-and-write-files/ | Name: read_write_files.js => Script to view all files (and its contents) that app read or write.
+
+https://codeshare.frida.re/@fadeevab/intercept-android-apk-crypto-operations/ | Name: apk_crypto_operations.js => intercepts Java Crypto API in Android application, prints a symmetric key, algorithm spec, and a plain data right before the final encryption (as well as a cipher data right before the decryption).
+
+https://codeshare.frida.re/@leolashkevych/android-deep-link-observer/ | Name: deeplink_observer.js => Dumping URI data from a deep link.
+
+https://codeshare.frida.re/@ma4the/android-deeplink-jsi-monitor/ | Name: deeplink_jsi_monitor.js => Monitors Android deeplink activity and WebView JavaScript interfaces (JSI) using Frida. Tracks Intent data, JavaScript interface usage, and WebView.evaluateJavascript execution.
+
+
+# Bypass
+https://codeshare.frida.re/@fopina/piracy-checker-bypass/ | Name: play_store_bypass.js => Bypass the "Installed from Play Store" check
+
+https://codeshare.frida.re/@JockerNet-Dev/detectprotections/ | Name: detect_protections.js => Detects protections
+
+https://codeshare.frida.re/@salecharohit/instrumenting-native-android-functions-using-frida/ | Name: native_android_functions.js => launches the Root Inspector app, detects when its native anti-root libraries load, and patches all the root-checking functions so they always report that the device is not rooted.
+
+https://codeshare.frida.re/@Raphkitue/android-debug-mode-bypass/ | Name: debugger_mode_bypass.js => Bypasses debugging mode checks when USB Debugging mode is activated
+
+
+Pending:
+https://codeshare.frida.re/@sdcampbell/unified-android-root-and-debugger-bypass/
+https://codeshare.frida.re/@Surendrajat/anti-root/
+https://codeshare.frida.re/@h4rithd/onerule-by-h4rithd/
+https://codeshare.frida.re/@ibadfawa/bypass-decrypted-rom-integrity-checks---frida/
+https://codeshare.frida.re/@zeroinside/extractcerts/
+https://codeshare.frida.re/@khaledealrefaee/universal-android-security-bypass-suite-uasbs-v1-full-mobile-defense-disabler/
