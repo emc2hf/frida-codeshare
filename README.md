@@ -1,5 +1,3 @@
-Frida codeshare scripts. Order is Category most interesting
-
 # HTTP
 
 | URL | Script | Location | Description |
