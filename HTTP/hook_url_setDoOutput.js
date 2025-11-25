@@ -14,24 +14,132 @@
 'use strict';
 
 const TARGET_URL = "https://android.prod.cloud.netflix.com/graphql";
+const showFileInfo = false;
+const showReturnValue = true;
+const showMethodSignature = true;
+
 // Path to uploaded log (kept for your reference)
+
+// function printStackShort() {
+//   try {
+//     var Exception = Java.use('java.lang.Exception');
+//     var ex = Exception.$new();
+//     var st = ex.getStackTrace();
+//     // skip the first 2 frames (this helper & Exception constructor)
+//     // for (var i = 2; i < Math.min(st.length, 10); i++) {
+//     for (var i = 0; i < Math.min(st.length, 10); i++) {
+//       try {
+//         var f = st[i];
+//         console.log("    at " + f.getClassName() + "." + f.getMethodName() +
+//                     "(" + (f.getFileName() || "Unknown") + ":" + f.getLineNumber() + ")");
+//       } catch (e) {}
+//     }
+//   } catch (e) {}
+// }
+
+// function printStackShort() {
+//   try {
+//     var backtrace = Java.backtrace({ limit: 10 });  // Limit to 10 frames; adjust as needed
+//     backtrace.frames.forEach(function(frame, index) {
+//       // Optionally skip the first 0-2 frames if they include internals
+//       if (index >= 0) {  // Change to 2 if you want to skip like your original comment
+//         var fileInfo = frame.origin || "Unknown";  // origin often includes file:line
+//         console.log(" at " + frame.className + "." + frame.methodName +
+//                     " " + frame.signature + " (" + fileInfo + ")");
+//       }
+//     });
+//   } catch (e) {
+//     console.error("Error getting backtrace:", e);
+//   }
+// }
+
 
 function printStackShort() {
   try {
-    var Exception = Java.use('java.lang.Exception');
-    var ex = Exception.$new();
-    var st = ex.getStackTrace();
-    // skip the first 2 frames (this helper & Exception constructor)
-    // for (var i = 2; i < Math.min(st.length, 10); i++) {
-    for (var i = 0; i < Math.min(st.length, 10); i++) {
-      try {
-        var f = st[i];
-        console.log("    at " + f.getClassName() + "." + f.getMethodName() +
-                    "(" + (f.getFileName() || "Unknown") + ":" + f.getLineNumber() + ")");
-      } catch (e) {}
-    }
-  } catch (e) {}
+    var backtrace = Java.backtrace({ limit: 10 });  // Limit to 10 frames; adjust as needed
+    backtrace.frames.forEach(function(frame, index) {
+      // Optionally skip the first 0-2 frames if they include internals
+      if (index >= 0) {  // Change to 2 if you want to skip like your original comment
+        var fileInfo = frame.origin || "Unknown";  // origin often includes file:line
+        var sigParts = frame.signature.split(',');
+        var methodDesc = sigParts[2];
+        var parsed = parseMethodDesc(methodDesc);
+        var prettyParams = parsed.params ? '(' + parsed.params + ')' : '()';
+        var methodDisplay = frame.methodName;
+        var prettyRet = '';
+        if (parsed.ret !== 'void') {
+          prettyRet = parsed.ret + ' ';
+        } else if (frame.methodName !== '<init>') {
+          prettyRet = 'void ';
+        }
+        if (frame.methodName === '<init>') {
+          methodDisplay = frame.className.split('.').pop();
+        }
+
+        prettyParams = showMethodSignature ? prettyParams : '';
+        prettyRet = showReturnValue ? ("<- " + prettyRet) : '';
+        console.log(`====> at ${frame.className}.${methodDisplay} ${prettyParams} ${prettyRet} `);
+        if (showFileInfo) {
+          // if (frame.className == "o.gdG" && methodDisplay == "d") {
+            console.log(`--------> F: ${fileInfo}`);
+          // }
+        }
+      }
+    });
+  } catch (e) {
+    console.error("Error getting backtrace:", e);
+  }
+  console.log(); console.log();
 }
+
+function parseMethodDesc(desc) {
+  if (!desc || !desc.startsWith('(')) return { params: '', ret: 'void' };
+  let i = 1;
+  let params = [];
+  while (desc[i] !== ')') {
+    let p = parseType(desc, i);
+    params.push(p.type);
+    i = p.next;
+  }
+  i++; // skip )
+  let ret = parseType(desc, i).type;
+  return { params: params.join(', '), ret: ret };
+}
+
+function parseType(desc, pos) {
+  let i = pos;
+  let dims = 0;
+  while (desc[i] === '[') {
+    dims++;
+    i++;
+  }
+  let typeChar = desc[i];
+  let type;
+  switch (typeChar) {
+    case 'V': type = 'void'; i++; break;
+    case 'Z': type = 'boolean'; i++; break;
+    case 'B': type = 'byte'; i++; break;
+    case 'C': type = 'char'; i++; break;
+    case 'D': type = 'double'; i++; break;
+    case 'F': type = 'float'; i++; break;
+    case 'I': type = 'int'; i++; break;
+    case 'J': type = 'long'; i++; break;
+    case 'S': type = 'short'; i++; break;
+    case 'L':
+      let start = i + 1;
+      i = desc.indexOf(';', start);
+      type = desc.substring(start, i).replace(/\//g, '.');
+      i++; // after ;
+      break;
+    default: type = 'unknown'; i++; break;
+  }
+  for (let d = 0; d < dims; d++) {
+    type += '[]';
+  }
+  return { type: type, next: i };
+}
+
+
 
 Java.perform(function () {
   console.log("[info] TARGET_URL: " + TARGET_URL);
